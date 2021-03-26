@@ -291,7 +291,15 @@ void createOneScene(int hashlen, float sx, float dx, float sy, float dy, std::st
 
 		// write ped label infomation xml file
 		const int headCode = 0x796E;
+		const int RIGHTFOOTFRONT = 0x60E6;
+		const int LEFTFOOTBACK = 0x3779;
+		const int RIGHTFOOTBACK = 0xCC4D;
+		const int LEFTHAND = 0x49D9;
+		const int RIGHTHAND = 0xDEAD;
+		const int STOMACH = 0x60F0;
+		const int NECK = 0x9995;
 		std::string shx, shy;
+		std::string miashx, miashy;
 		auto getBonePixel = [headCode, &shx, &shy](pedestrian thisPed)
 		{
 			Vector3 boneLoc = PED::GET_PED_BONE_COORDS(thisPed.pedActor, headCode, 0, 0, 0);
@@ -300,13 +308,88 @@ void createOneScene(int hashlen, float sx, float dx, float sy, float dy, std::st
 			shx = std::to_string(hx);
 			shy = std::to_string(hy);
 		};
+		auto getRightFootFrontPixel = [RIGHTFOOTFRONT, &shx, &shy](pedestrian thisPed)
+		{
+			Vector3 boneLoc = PED::GET_PED_BONE_COORDS(thisPed.pedActor, RIGHTFOOTFRONT, 0, 0, 0);
+			float hx, hy;
+			BOOL getCoord = GRAPHICS::_WORLD3D_TO_SCREEN2D(boneLoc.x, boneLoc.y, boneLoc.z, &hx, &hy);
+			miashx = std::to_string(hx);
+			miashy = std::to_string(hy);
+		};
+		auto getRightFootBackPixel = [RIGHTFOOTBACK, &shx, &shy](pedestrian thisPed)
+		{
+			Vector3 boneLoc = PED::GET_PED_BONE_COORDS(thisPed.pedActor, RIGHTFOOTBACK, 0, 0, 0);
+			float hx, hy;
+			BOOL getCoord = GRAPHICS::_WORLD3D_TO_SCREEN2D(boneLoc.x, boneLoc.y, boneLoc.z, &hx, &hy);
+			miashx = std::to_string(hx);
+			miashy = std::to_string(hy);
+		};
+		auto getLeftFootBackPixel = [LEFTFOOTBACK, &shx, &shy](pedestrian thisPed)
+		{
+			Vector3 boneLoc = PED::GET_PED_BONE_COORDS(thisPed.pedActor, LEFTFOOTBACK, 0, 0, 0);
+			float hx, hy;
+			BOOL getCoord = GRAPHICS::_WORLD3D_TO_SCREEN2D(boneLoc.x, boneLoc.y, boneLoc.z, &hx, &hy);
+			miashx = std::to_string(hx);
+			miashy = std::to_string(hy);
+		};
+		auto getLeftHandPixel = [LEFTHAND, &shx, &shy](pedestrian thisPed)
+		{
+			Vector3 boneLoc = PED::GET_PED_BONE_COORDS(thisPed.pedActor, LEFTHAND, 0, 0, 0);
+			float hx, hy;
+			BOOL getCoord = GRAPHICS::_WORLD3D_TO_SCREEN2D(boneLoc.x, boneLoc.y, boneLoc.z, &hx, &hy);
+			miashx = std::to_string(hx);
+			miashy = std::to_string(hy);
+		};
+		auto getRightHandPixel = [RIGHTHAND, &shx, &shy](pedestrian thisPed)
+		{
+			Vector3 boneLoc = PED::GET_PED_BONE_COORDS(thisPed.pedActor, RIGHTHAND, 0, 0, 0);
+			float hx, hy;
+			BOOL getCoord = GRAPHICS::_WORLD3D_TO_SCREEN2D(boneLoc.x, boneLoc.y, boneLoc.z, &hx, &hy);
+			miashx = std::to_string(hx);
+			miashy = std::to_string(hy);
+		};
+		auto getStomachPixel = [STOMACH, &shx, &shy](pedestrian thisPed)
+		{
+			Vector3 boneLoc = PED::GET_PED_BONE_COORDS(thisPed.pedActor, STOMACH, 0, 0, 0);
+			float hx, hy;
+			BOOL getCoord = GRAPHICS::_WORLD3D_TO_SCREEN2D(boneLoc.x, boneLoc.y, boneLoc.z, &hx, &hy);
+			miashx = std::to_string(hx);
+			miashy = std::to_string(hy);
+		};
+		auto getNeckPixel = [NECK, &shx, &shy](pedestrian thisPed)
+		{
+			Vector3 boneLoc = PED::GET_PED_BONE_COORDS(thisPed.pedActor, NECK, 0, 0, 0);
+			float hx, hy;
+			BOOL getCoord = GRAPHICS::_WORLD3D_TO_SCREEN2D(boneLoc.x, boneLoc.y, boneLoc.z, &hx, &hy);
+			miashx = std::to_string(hx);
+			miashy = std::to_string(hy);
+		};
 
 		for (int i = ms; i < m; i++) {
 			std::string pedInfo = "\t<ped id=" + std::to_string(i) + ">\n";
+			std::string mieInfo = "\t<ped id=" + std::to_string(i) + ">\n";
 			getBonePixel(peds[i]);
 			pedInfo += "\t\t<SKEL_Head x=" + shx + " y=" + shy + " />\n";
+			mieInfo += "\t\t<SKEL_Head x=" + shx + " y=" + shy + " />\n";
+			getRightFootFrontPixel(peds[i])
+			mieInfo += "\t\t<SKEL_RightFootFront x=" + miashx + " y=" + miashy + " />\n";
+			getRightFootBackPixel(peds[i]);
+			mieInfo += "\t\t<SKEL_RightFootBack x=" + miashx + " y=" + miashy + " />\n";
+			getLeftFootBackPixel(peds[i]);
+			mieInfo += "\t\t<SKEL_LeftFootBack x=" + miashx + " y=" + miashy + " />\n";
+			getLeftHandPixel(peds[i]);
+			mieInfo += "\t\t<SKEL_LeftHand x=" + miashx + " y=" + miashy + " />\n";
+			getRightHandPixel(peds[i]);
+			mieInfo += "\t\t<SKEL_RightHand x=" + miashx + " y=" + miashy + " />\n";
+			getStomachPixel(peds[i]);
+			mieInfo += "\t\t<SKEL_Stomach x=" + miashx + " y=" + miashy + " />\n";
+			getNeckPixel(peds[i]);
+			mieInfo += "\t\t<SKEL_Neck x=" + miashx + " y=" + miashy + " />\n";
 			pedInfo += "</ped>";
+			mieInfo += "</ped>";
 			log_to_pedTxt(pedInfo, pedInfoFile);
+			char *mioFile = "bonesCoords.xml";
+			log_to_pedTxt(mieInfo, mioFile);
 		}
 
 		// capture stencial raw file
